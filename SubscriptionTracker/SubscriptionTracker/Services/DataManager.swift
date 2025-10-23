@@ -188,7 +188,8 @@ class DataManager: ObservableObject {
     }
 
     func peakSpendingMonth() -> (month: Int, amount: Double)? {
-        costsByMonth().max { $0.value < $1.value }
+        guard let peak = costsByMonth().max(by: { $0.value < $1.value }) else { return nil }
+        return (month: peak.key, amount: peak.value)
     }
 
     func costsByCategory() -> [(category: Category?, cost: Double)] {
