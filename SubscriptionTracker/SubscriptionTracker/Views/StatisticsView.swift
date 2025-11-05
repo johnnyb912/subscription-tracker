@@ -5,53 +5,55 @@ struct StatisticsView: View {
 
     var body: some View {
         ScrollView {
-            VStack(spacing: 20) {
-                // Overview cards
-                HStack(spacing: 12) {
+            VStack(spacing: 12) {
+                // Overview cards - Batman tech style
+                HStack(spacing: 8) {
                     StatCard(
-                        title: "Monthly",
-                        value: "$\(String(format: "%.2f", dataManager.totalMonthlyCost()))",
-                        icon: "calendar",
-                        color: .blue
+                        title: "MONTHLY",
+                        value: "$\(dataManager.totalMonthlyCost().batFormatted)",
+                        icon: "gauge.with.dots.needle.67percent",
+                        color: .batCyan
                     )
 
                     StatCard(
-                        title: "Yearly",
-                        value: "$\(String(format: "%.2f", dataManager.totalYearlyCost()))",
-                        icon: "calendar.circle",
-                        color: .green
-                    )
-                }
-
-                HStack(spacing: 12) {
-                    StatCard(
-                        title: "Active",
-                        value: "\(dataManager.activeSubscriptions().count)",
-                        icon: "checkmark.circle",
-                        color: .orange
-                    )
-
-                    StatCard(
-                        title: "Total",
-                        value: "\(dataManager.subscriptions.count)",
-                        icon: "list.bullet",
-                        color: .purple
+                        title: "YEARLY",
+                        value: "$\(dataManager.totalYearlyCost().batFormatted)",
+                        icon: "chart.line.uptrend.xyaxis",
+                        color: .batGreen
                     )
                 }
 
-                // Radial chart
-                VStack(alignment: .leading, spacing: 12) {
-                    Text("Spending by Category")
-                        .font(.system(size: 14, weight: .semibold))
+                HStack(spacing: 8) {
+                    StatCard(
+                        title: "ACTIVE",
+                        value: "\(dataManager.activeSubscriptions().count.batFormatted)",
+                        icon: "bolt.circle",
+                        color: .batYellow
+                    )
+
+                    StatCard(
+                        title: "TOTAL",
+                        value: "\(dataManager.subscriptions.count.batFormatted)",
+                        icon: "square.stack.3d.up",
+                        color: .batBlue
+                    )
+                }
+
+                // Radial chart - Glowing effect
+                VStack(alignment: .leading, spacing: 10) {
+                    Text("[ COST_DISTRIBUTION ]")
+                        .font(.system(size: 11, weight: .bold, design: .monospaced))
+                        .foregroundColor(.batTextPrimary)
+                        .tracking(2)
 
                     if dataManager.activeSubscriptions().isEmpty {
                         VStack(spacing: 12) {
-                            Image(systemName: "chart.pie")
-                                .font(.system(size: 48))
-                                .foregroundColor(.gray)
-                            Text("No active subscriptions")
-                                .font(.system(size: 12))
-                                .foregroundColor(.secondary)
+                            Image(systemName: "chart.pie.fill")
+                                .font(.system(size: 56))
+                                .foregroundColor(.batTextTertiary)
+                            Text("[ NO_ACTIVE_DATA ]")
+                                .font(.system(size: 11, design: .monospaced))
+                                .foregroundColor(.batTextSecondary)
                         }
                         .frame(maxWidth: .infinity)
                         .padding(.vertical, 40)
@@ -59,14 +61,15 @@ struct StatisticsView: View {
                         RadialChartView(data: dataManager.costsByCategory())
                     }
                 }
-                .padding()
-                .background(Color(NSColor.controlBackgroundColor))
-                .cornerRadius(12)
+                .padding(14)
+                .batCard(glowing: true)
 
-                // Category breakdown
-                VStack(alignment: .leading, spacing: 12) {
-                    Text("Category Breakdown")
-                        .font(.system(size: 14, weight: .semibold))
+                // Category breakdown - Tech list
+                VStack(alignment: .leading, spacing: 10) {
+                    Text("[ CATEGORY_ANALYSIS ]")
+                        .font(.system(size: 11, weight: .bold, design: .monospaced))
+                        .foregroundColor(.batTextPrimary)
+                        .tracking(2)
 
                     let costsByCategory = dataManager.costsByCategory()
                     let totalCost = costsByCategory.reduce(0) { $0 + $1.cost }
@@ -81,46 +84,50 @@ struct StatisticsView: View {
                     }
 
                     if costsByCategory.isEmpty {
-                        Text("No data available")
-                            .font(.system(size: 12))
-                            .foregroundColor(.secondary)
+                        Text("[ NO_CATEGORY_DATA ]")
+                            .font(.system(size: 11, design: .monospaced))
+                            .foregroundColor(.batTextSecondary)
                             .frame(maxWidth: .infinity, alignment: .center)
                             .padding(.vertical, 20)
                     }
                 }
-                .padding()
-                .background(Color(NSColor.controlBackgroundColor))
-                .cornerRadius(12)
+                .padding(14)
+                .batCard()
 
-                // Monthly projection
+                // Peak spending - Alert style
                 if let peak = dataManager.peakSpendingMonth() {
-                    VStack(alignment: .leading, spacing: 12) {
-                        Text("Peak Spending Month")
-                            .font(.system(size: 14, weight: .semibold))
+                    VStack(alignment: .leading, spacing: 10) {
+                        Text("[ PEAK_EXPENDITURE ]")
+                            .font(.system(size: 11, weight: .bold, design: .monospaced))
+                            .foregroundColor(.batTextPrimary)
+                            .tracking(2)
 
-                        HStack {
+                        HStack(spacing: 16) {
                             VStack(alignment: .leading, spacing: 4) {
-                                Text(monthName(peak.month))
-                                    .font(.system(size: 16, weight: .semibold))
-                                Text("Highest payment month")
-                                    .font(.system(size: 11))
-                                    .foregroundColor(.secondary)
+                                Text(monthName(peak.month).uppercased())
+                                    .font(.system(size: 18, weight: .bold, design: .monospaced))
+                                    .foregroundColor(.batYellow)
+                                    .batGlow(color: .batYellow, radius: 2)
+                                Text("HIGHEST_MONTHLY_CHARGE")
+                                    .font(.system(size: 9, design: .monospaced))
+                                    .foregroundColor(.batTextTertiary)
                             }
 
                             Spacer()
 
-                            Text("$\(String(format: "%.2f", peak.amount))")
-                                .font(.system(size: 20, weight: .bold))
-                                .foregroundColor(.accentColor)
+                            Text("$\(peak.amount.batFormatted)")
+                                .font(.system(size: 22, weight: .bold, design: .monospaced))
+                                .foregroundColor(.batRed)
+                                .batGlow(color: .batRed, radius: 2)
                         }
                     }
-                    .padding()
-                    .background(Color(NSColor.controlBackgroundColor))
-                    .cornerRadius(12)
+                    .padding(14)
+                    .batCard(glowing: true)
                 }
             }
-            .padding()
+            .padding(12)
         }
+        .background(Color.batBlack)
     }
 
     private func monthName(_ month: Int) -> String {
@@ -137,24 +144,28 @@ struct StatCard: View {
     let color: Color
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 8) {
+        VStack(alignment: .leading, spacing: 6) {
             HStack {
                 Image(systemName: icon)
                     .foregroundColor(color)
+                    .batGlow(color: color, radius: 2)
+                    .imageScale(.medium)
                 Spacer()
             }
 
             Text(value)
-                .font(.system(size: 20, weight: .bold))
+                .font(.system(size: 20, weight: .bold, design: .monospaced))
+                .foregroundColor(color)
+                .batGlow(color: color, radius: 1)
 
             Text(title)
-                .font(.system(size: 11))
-                .foregroundColor(.secondary)
+                .font(.system(size: 9, weight: .bold, design: .monospaced))
+                .foregroundColor(.batTextTertiary)
+                .tracking(1)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
-        .padding()
-        .background(Color(NSColor.controlBackgroundColor))
-        .cornerRadius(12)
+        .padding(12)
+        .batCard()
     }
 }
 
@@ -171,10 +182,11 @@ struct RadialChartView: View {
             let radius = min(geometry.size.width, geometry.size.height) / 2 - 20
 
             ZStack {
-                // Draw pie slices
+                // Draw pie slices with glow
                 ForEach(data.indices, id: \.self) { index in
                     let startAngle = startAngle(for: index)
                     let endAngle = endAngle(for: index)
+                    let segmentColor = data[index].category?.displayColor ?? Color.batCyan
 
                     Path { path in
                         path.move(to: center)
@@ -187,20 +199,27 @@ struct RadialChartView: View {
                         )
                         path.closeSubpath()
                     }
-                    .fill(data[index].category?.displayColor ?? Color.gray)
+                    .fill(segmentColor)
+                    .shadow(color: segmentColor.opacity(0.4), radius: 4)
                 }
 
-                // Center circle
+                // Center circle - Batman tech display
                 Circle()
-                    .fill(Color(NSColor.controlBackgroundColor))
+                    .fill(Color.batBlack)
                     .frame(width: radius * 0.6, height: radius * 0.6)
                     .overlay(
-                        VStack(spacing: 4) {
-                            Text("$\(String(format: "%.0f", totalCost))")
-                                .font(.system(size: 20, weight: .bold))
-                            Text("per month")
-                                .font(.system(size: 10))
-                                .foregroundColor(.secondary)
+                        Circle()
+                            .strokeBorder(Color.batCyan.opacity(0.3), lineWidth: 1)
+                    )
+                    .overlay(
+                        VStack(spacing: 2) {
+                            Text("$\(totalCost.batFormatted)")
+                                .font(.system(size: 18, weight: .bold, design: .monospaced))
+                                .foregroundColor(.batCyan)
+                                .batGlow(color: .batCyan, radius: 2)
+                            Text("/ MONTH")
+                                .font(.system(size: 8, design: .monospaced))
+                                .foregroundColor(.batTextTertiary)
                         }
                     )
             }
@@ -227,24 +246,34 @@ struct CategoryBreakdownRow: View {
     let percentage: Double
 
     var body: some View {
-        HStack(spacing: 12) {
-            Circle()
-                .fill(category?.displayColor ?? Color.gray)
-                .frame(width: 12, height: 12)
+        HStack(spacing: 10) {
+            // Indicator - sharp square instead of circle
+            Rectangle()
+                .fill(category?.displayColor ?? Color.batCyan)
+                .frame(width: 8, height: 8)
+                .shadow(color: (category?.displayColor ?? Color.batCyan).opacity(0.6), radius: 3)
 
-            VStack(alignment: .leading, spacing: 2) {
-                Text(category?.name ?? "Uncategorized")
-                    .font(.system(size: 12, weight: .medium))
+            VStack(alignment: .leading, spacing: 1) {
+                Text((category?.name ?? "UNCATEGORIZED").uppercased())
+                    .font(.system(size: 10, weight: .bold, design: .monospaced))
+                    .foregroundColor(.batTextPrimary)
                 Text("\(String(format: "%.1f", percentage))%")
-                    .font(.system(size: 10))
-                    .foregroundColor(.secondary)
+                    .font(.system(size: 8, design: .monospaced))
+                    .foregroundColor(.batTextTertiary)
             }
 
             Spacer()
 
-            Text("$\(String(format: "%.2f", cost))")
-                .font(.system(size: 13, weight: .semibold))
+            Text("$\(cost.batFormatted)")
+                .font(.system(size: 12, weight: .bold, design: .monospaced))
+                .foregroundColor(.batGreen)
         }
-        .padding(.vertical, 4)
+        .padding(.vertical, 6)
+        .padding(.horizontal, 8)
+        .background(Color.batMidGray.opacity(0.3))
+        .overlay(
+            Rectangle()
+                .strokeBorder(Color.batMidGray.opacity(0.5), lineWidth: 1)
+        )
     }
 }

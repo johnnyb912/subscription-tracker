@@ -13,43 +13,64 @@ struct MainView: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            // Header
+            // Header - Batman style
             HStack {
-                Text("Subscription Tracker")
-                    .font(.system(size: 16, weight: .semibold))
+                Image(systemName: "shield.lefthalf.filled")
+                    .foregroundColor(.batCyan)
+                    .batGlow(color: .batCyan, radius: 3)
+
+                Text("SUBSCRIPTION TRACKER")
+                    .font(.system(size: 14, weight: .bold, design: .monospaced))
+                    .foregroundColor(.batTextPrimary)
+                    .tracking(2)
+
                 Spacer()
+
+                Text("[ v1.0 ]")
+                    .font(.system(size: 9, design: .monospaced))
+                    .foregroundColor(.batTextTertiary)
+
                 Button(action: {
                     NSApplication.shared.terminate(nil)
                 }) {
-                    Image(systemName: "xmark.circle.fill")
-                        .foregroundColor(.gray)
-                        .imageScale(.medium)
+                    Image(systemName: "power")
+                        .foregroundColor(.batRed)
+                        .imageScale(.small)
                 }
                 .buttonStyle(.plain)
+                .help("Shutdown")
             }
-            .padding()
-            .background(Color(NSColor.controlBackgroundColor))
+            .padding(.horizontal, 16)
+            .padding(.vertical, 12)
+            .background(Color.batBlack)
+            .overlay(
+                Rectangle()
+                    .frame(height: 1)
+                    .foregroundColor(Color.batCyan.opacity(0.3)),
+                alignment: .bottom
+            )
 
-            // Tab Bar
-            HStack(spacing: 0) {
-                TabButton(title: "Subscriptions", icon: "list.bullet.rectangle", isSelected: selectedTab == .subscriptions) {
+            // Tab Bar - Tech style
+            HStack(spacing: 2) {
+                TabButton(title: "DATA", icon: "cylinder.split.1x2", isSelected: selectedTab == .subscriptions) {
                     selectedTab = .subscriptions
                 }
-                TabButton(title: "Calendar", icon: "calendar", isSelected: selectedTab == .calendar) {
+                TabButton(title: "TIMELINE", icon: "calendar.badge.clock", isSelected: selectedTab == .calendar) {
                     selectedTab = .calendar
                 }
-                TabButton(title: "Statistics", icon: "chart.pie", isSelected: selectedTab == .statistics) {
+                TabButton(title: "METRICS", icon: "chart.pie.fill", isSelected: selectedTab == .statistics) {
                     selectedTab = .statistics
                 }
-                TabButton(title: "Settings", icon: "gear", isSelected: selectedTab == .settings) {
+                TabButton(title: "CONFIG", icon: "gearshape.fill", isSelected: selectedTab == .settings) {
                     selectedTab = .settings
                 }
             }
-            .padding(.horizontal)
-            .padding(.vertical, 8)
-            .background(Color(NSColor.controlBackgroundColor).opacity(0.5))
+            .padding(8)
+            .background(Color.batDarkGray)
 
-            Divider()
+            Rectangle()
+                .frame(height: 1)
+                .foregroundColor(Color.batMidGray.opacity(0.5))
 
             // Content
             Group {
@@ -64,8 +85,10 @@ struct MainView: View {
                     SettingsView()
                 }
             }
+            .background(Color.batBlack)
         }
         .frame(width: 450, height: 600)
+        .background(Color.batBlack)
     }
 }
 
@@ -77,17 +100,20 @@ struct TabButton: View {
 
     var body: some View {
         Button(action: action) {
-            VStack(spacing: 4) {
+            VStack(spacing: 6) {
                 Image(systemName: icon)
                     .imageScale(.medium)
+                    .font(.system(size: 14, weight: isSelected ? .semibold : .regular))
+                    .foregroundColor(isSelected ? .batCyan : .batTextSecondary)
+                    .batGlow(color: .batCyan, radius: isSelected ? 3 : 0)
+
                 Text(title)
-                    .font(.system(size: 10))
+                    .font(.system(size: 8, weight: .bold, design: .monospaced))
+                    .tracking(1)
             }
             .frame(maxWidth: .infinity)
-            .padding(.vertical, 6)
-            .foregroundColor(isSelected ? .accentColor : .gray)
-            .background(isSelected ? Color.accentColor.opacity(0.1) : Color.clear)
-            .cornerRadius(6)
+            .padding(.vertical, 8)
+            .batButton(isSelected: isSelected)
         }
         .buttonStyle(.plain)
     }

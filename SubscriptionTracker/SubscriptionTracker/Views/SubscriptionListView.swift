@@ -18,85 +18,129 @@ struct SubscriptionListView: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            // Search and actions
-            HStack {
+            // Search and actions - Batman style
+            HStack(spacing: 12) {
                 Image(systemName: "magnifyingglass")
-                    .foregroundColor(.gray)
-                TextField("Search subscriptions...", text: $searchText)
+                    .foregroundColor(.batCyan)
+                    .imageScale(.small)
+                TextField("SEARCH_", text: $searchText)
                     .textFieldStyle(.plain)
+                    .font(.system(size: 12, design: .monospaced))
+                    .foregroundColor(.batTextPrimary)
 
                 if !searchText.isEmpty {
                     Button(action: { searchText = "" }) {
-                        Image(systemName: "xmark.circle.fill")
-                            .foregroundColor(.gray)
+                        Image(systemName: "xmark")
+                            .foregroundColor(.batRed)
+                            .imageScale(.small)
                     }
                     .buttonStyle(.plain)
                 }
 
-                Divider()
-                    .frame(height: 20)
+                Rectangle()
+                    .fill(Color.batMidGray)
+                    .frame(width: 1, height: 16)
 
                 Button(action: { CSVManager.shared.importFromCSV() }) {
-                    Image(systemName: "square.and.arrow.down")
+                    Image(systemName: "arrow.down.doc")
+                        .foregroundColor(.batCyan)
+                        .imageScale(.small)
                 }
                 .buttonStyle(.plain)
-                .help("Import CSV")
+                .help("IMPORT_DATA")
 
                 Button(action: { CSVManager.shared.exportToCSV() }) {
-                    Image(systemName: "square.and.arrow.up")
+                    Image(systemName: "arrow.up.doc")
+                        .foregroundColor(.batCyan)
+                        .imageScale(.small)
                 }
                 .buttonStyle(.plain)
-                .help("Export CSV")
+                .help("EXPORT_DATA")
 
                 Button(action: { showingAddSheet = true }) {
-                    Image(systemName: "plus.circle.fill")
-                        .foregroundColor(.accentColor)
+                    Image(systemName: "plus.square.fill")
+                        .foregroundColor(.batCyan)
+                        .imageScale(.medium)
+                        .batGlow(color: .batCyan, radius: 2)
                 }
                 .buttonStyle(.plain)
-                .help("Add Subscription")
+                .help("ADD_NEW")
             }
-            .padding()
-            .background(Color(NSColor.controlBackgroundColor).opacity(0.5))
+            .padding(12)
+            .background(Color.batDarkGray)
 
-            Divider()
+            Rectangle()
+                .fill(Color.batMidGray.opacity(0.5))
+                .frame(height: 1)
 
-            // Summary
-            HStack {
-                VStack(alignment: .leading, spacing: 4) {
-                    Text("Active: \(dataManager.activeSubscriptions().count)")
-                        .font(.system(size: 11))
-                        .foregroundColor(.secondary)
-                    Text("Monthly: $\(String(format: "%.2f", dataManager.totalMonthlyCost()))")
-                        .font(.system(size: 13, weight: .semibold))
+            // Summary - Tech display
+            HStack(spacing: 16) {
+                VStack(alignment: .leading, spacing: 2) {
+                    Text("[ ACTIVE ]")
+                        .font(.system(size: 9, design: .monospaced))
+                        .foregroundColor(.batTextTertiary)
+                    Text("\(dataManager.activeSubscriptions().count.batFormatted)")
+                        .font(.system(size: 20, weight: .bold, design: .monospaced))
+                        .foregroundColor(.batCyan)
+                        .batGlow(color: .batCyan, radius: 2)
                 }
+
+                Rectangle()
+                    .fill(Color.batCyan.opacity(0.3))
+                    .frame(width: 1, height: 30)
+
+                VStack(alignment: .leading, spacing: 2) {
+                    Text("[ MONTHLY ]")
+                        .font(.system(size: 9, design: .monospaced))
+                        .foregroundColor(.batTextTertiary)
+                    Text("$\(dataManager.totalMonthlyCost().batFormatted)")
+                        .font(.system(size: 16, weight: .bold, design: .monospaced))
+                        .foregroundColor(.batGreen)
+                }
+
                 Spacer()
-                VStack(alignment: .trailing, spacing: 4) {
-                    Text("Yearly: $\(String(format: "%.2f", dataManager.totalYearlyCost()))")
-                        .font(.system(size: 13, weight: .semibold))
+
+                VStack(alignment: .trailing, spacing: 2) {
+                    Text("[ YEARLY ]")
+                        .font(.system(size: 9, design: .monospaced))
+                        .foregroundColor(.batTextTertiary)
+                    Text("$\(dataManager.totalYearlyCost().batFormatted)")
+                        .font(.system(size: 16, weight: .bold, design: .monospaced))
+                        .foregroundColor(.batYellow)
                 }
             }
-            .padding()
-            .background(Color.accentColor.opacity(0.1))
+            .padding(12)
+            .background(Color.batBlack.opacity(0.8))
+            .overlay(
+                Rectangle()
+                    .strokeBorder(Color.batCyan.opacity(0.2), lineWidth: 1)
+            )
 
             // List
             ScrollView {
-                LazyVStack(spacing: 8) {
+                LazyVStack(spacing: 6) {
                     if filteredSubscriptions.isEmpty {
-                        VStack(spacing: 12) {
-                            Image(systemName: "creditcard.circle")
-                                .font(.system(size: 48))
-                                .foregroundColor(.gray)
-                            Text(searchText.isEmpty ? "No subscriptions yet" : "No results found")
-                                .font(.system(size: 14))
-                                .foregroundColor(.secondary)
+                        VStack(spacing: 16) {
+                            Image(systemName: "externaldrive.badge.xmark")
+                                .font(.system(size: 56))
+                                .foregroundColor(.batTextTertiary)
+                            Text(searchText.isEmpty ? "[ NO_DATA_FOUND ]" : "[ SEARCH_EMPTY ]")
+                                .font(.system(size: 12, weight: .bold, design: .monospaced))
+                                .foregroundColor(.batTextSecondary)
                             if searchText.isEmpty {
-                                Button("Add Subscription") {
-                                    showingAddSheet = true
+                                Button(action: { showingAddSheet = true }) {
+                                    Text("INITIALIZE_DATA")
+                                        .font(.system(size: 10, weight: .bold, design: .monospaced))
+                                        .foregroundColor(.batCyan)
+                                        .padding(.horizontal, 16)
+                                        .padding(.vertical, 8)
+                                        .batButton(isSelected: true)
                                 }
+                                .buttonStyle(.plain)
                             }
                         }
                         .frame(maxWidth: .infinity)
-                        .padding(.top, 80)
+                        .padding(.top, 100)
                     } else {
                         ForEach(filteredSubscriptions) { subscription in
                             SubscriptionRow(subscription: subscription) {
@@ -105,8 +149,9 @@ struct SubscriptionListView: View {
                         }
                     }
                 }
-                .padding()
+                .padding(12)
             }
+            .background(Color.batBlack)
         }
         .sheet(isPresented: $showingAddSheet) {
             SubscriptionEditView(subscription: nil)
@@ -136,103 +181,99 @@ struct SubscriptionRow: View {
 
     var body: some View {
         Button(action: onTap) {
-            HStack(spacing: 12) {
-                // Category indicator
-                RoundedRectangle(cornerRadius: 4)
-                    .fill(category?.displayColor ?? Color.gray)
-                    .frame(width: 4)
+            HStack(spacing: 0) {
+                // Category indicator - sharp edge
+                Rectangle()
+                    .fill(category?.displayColor ?? Color.batCyan)
+                    .frame(width: 3)
 
-                VStack(alignment: .leading, spacing: 4) {
+                VStack(alignment: .leading, spacing: 6) {
                     HStack {
-                        Text(subscription.name)
-                            .font(.system(size: 14, weight: .semibold))
-                            .foregroundColor(.primary)
+                        Text(subscription.name.uppercased())
+                            .font(.system(size: 12, weight: .bold, design: .monospaced))
+                            .foregroundColor(.batTextPrimary)
                         Spacer()
-                        Text("$\(String(format: "%.2f", subscription.cost))")
-                            .font(.system(size: 14, weight: .bold))
-                            .foregroundColor(.primary)
+                        Text("$\(subscription.cost.batFormatted)")
+                            .font(.system(size: 14, weight: .bold, design: .monospaced))
+                            .foregroundColor(.batGreen)
+                            .batGlow(color: .batGreen, radius: 1)
                     }
 
-                    HStack {
-                        Text(subscription.billingCycle.rawValue)
-                            .font(.system(size: 11))
-                            .foregroundColor(.secondary)
+                    HStack(spacing: 8) {
+                        Text("[\(subscription.billingCycle.rawValue.uppercased())]")
+                            .font(.system(size: 9, design: .monospaced))
+                            .foregroundColor(.batTextSecondary)
 
                         if let category = category {
-                            Text("•")
-                                .foregroundColor(.secondary)
-                                .font(.system(size: 11))
-                            Text(category.name)
-                                .font(.system(size: 11))
-                                .foregroundColor(.secondary)
+                            Text("|")
+                                .foregroundColor(.batTextTertiary)
+                                .font(.system(size: 9))
+                            Text(category.name.uppercased())
+                                .font(.system(size: 9, design: .monospaced))
+                                .foregroundColor(.batTextSecondary)
                         }
 
                         Spacer()
 
                         if subscription.status == .canceled {
-                            Text("Canceled")
-                                .font(.system(size: 10, weight: .medium))
-                                .foregroundColor(.white)
+                            Text("OFFLINE")
+                                .font(.system(size: 8, weight: .bold, design: .monospaced))
+                                .foregroundColor(.batBlack)
                                 .padding(.horizontal, 6)
-                                .padding(.vertical, 2)
-                                .background(Color.red)
-                                .cornerRadius(4)
+                                .padding(.vertical, 3)
+                                .background(Color.batRed)
+                                .cornerRadius(1)
                         }
                     }
 
                     HStack {
                         Text(formatNextPayment())
-                            .font(.system(size: 11))
-                            .foregroundColor(daysUntilPayment <= 3 && subscription.status == .active ? .orange : .secondary)
+                            .font(.system(size: 10, design: .monospaced))
+                            .foregroundColor(daysUntilPayment <= 3 && subscription.status == .active ? .batYellow : .batTextTertiary)
 
                         Spacer()
 
                         if !tags.isEmpty {
                             HStack(spacing: 4) {
                                 ForEach(tags.prefix(2)) { tag in
-                                    Text(tag.name)
-                                        .font(.system(size: 9, weight: .medium))
-                                        .foregroundColor(.white)
-                                        .padding(.horizontal, 6)
+                                    Text(tag.name.uppercased())
+                                        .font(.system(size: 7, weight: .bold, design: .monospaced))
+                                        .foregroundColor(.batBlack)
+                                        .padding(.horizontal, 5)
                                         .padding(.vertical, 2)
                                         .background(tag.displayColor)
-                                        .cornerRadius(4)
+                                        .cornerRadius(1)
                                 }
                                 if tags.count > 2 {
                                     Text("+\(tags.count - 2)")
-                                        .font(.system(size: 9))
-                                        .foregroundColor(.secondary)
+                                        .font(.system(size: 8, design: .monospaced))
+                                        .foregroundColor(.batTextTertiary)
                                 }
                             }
                         }
                     }
                 }
+                .padding(10)
             }
-            .padding(12)
-            .background(Color(NSColor.controlBackgroundColor))
-            .cornerRadius(8)
-            .overlay(
-                RoundedRectangle(cornerRadius: 8)
-                    .stroke(subscription.isUpcoming && subscription.status == .active ? Color.orange : Color.clear, lineWidth: 1)
-            )
+            .batCard(glowing: subscription.isUpcoming && subscription.status == .active)
         }
         .buttonStyle(.plain)
     }
 
     private func formatNextPayment() -> String {
         let formatter = DateFormatter()
-        formatter.dateStyle = .medium
+        formatter.dateStyle = .short
 
         if daysUntilPayment == 0 {
-            return "Due today"
+            return "[ DUE_NOW ]"
         } else if daysUntilPayment == 1 {
-            return "Due tomorrow"
+            return "[ DUE_24H ]"
         } else if daysUntilPayment < 0 {
-            return "Overdue"
+            return "[ OVERDUE ]"
         } else if daysUntilPayment <= 7 {
-            return "Due in \(daysUntilPayment) days"
+            return "[ T-\(daysUntilPayment.batFormatted)D ]"
         } else {
-            return "Next: \(formatter.string(from: subscription.nextPaymentDate))"
+            return "NEXT: \(formatter.string(from: subscription.nextPaymentDate))"
         }
     }
 }
