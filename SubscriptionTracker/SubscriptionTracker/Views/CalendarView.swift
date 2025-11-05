@@ -6,44 +6,58 @@ struct CalendarView: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            // Month navigation
-            HStack {
+            // Month navigation - Batman tech style
+            HStack(spacing: 16) {
                 Button(action: previousMonth) {
-                    Image(systemName: "chevron.left")
+                    Image(systemName: "chevron.left.2")
+                        .foregroundColor(.batCyan)
+                        .imageScale(.medium)
+                        .batGlow(color: .batCyan, radius: 2)
                 }
                 .buttonStyle(.plain)
 
                 Spacer()
 
-                Text(monthYearString())
-                    .font(.system(size: 16, weight: .semibold))
+                Text(monthYearString().uppercased())
+                    .font(.system(size: 14, weight: .bold, design: .monospaced))
+                    .foregroundColor(.batTextPrimary)
+                    .tracking(2)
 
                 Spacer()
 
                 Button(action: nextMonth) {
-                    Image(systemName: "chevron.right")
+                    Image(systemName: "chevron.right.2")
+                        .foregroundColor(.batCyan)
+                        .imageScale(.medium)
+                        .batGlow(color: .batCyan, radius: 2)
                 }
                 .buttonStyle(.plain)
             }
-            .padding()
-            .background(Color(NSColor.controlBackgroundColor).opacity(0.5))
+            .padding(12)
+            .background(Color.batDarkGray)
 
-            Divider()
+            Rectangle()
+                .fill(Color.batMidGray.opacity(0.5))
+                .frame(height: 1)
 
             // Calendar grid
             VStack(spacing: 0) {
-                // Weekday headers
+                // Weekday headers - Tech style
                 HStack(spacing: 0) {
-                    ForEach(["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"], id: \.self) { day in
+                    ForEach(["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"], id: \.self) { day in
                         Text(day)
-                            .font(.system(size: 11, weight: .medium))
-                            .foregroundColor(.secondary)
+                            .font(.system(size: 9, weight: .bold, design: .monospaced))
+                            .foregroundColor(.batTextTertiary)
+                            .tracking(1)
                             .frame(maxWidth: .infinity)
                             .padding(.vertical, 8)
                     }
                 }
+                .background(Color.batBlack.opacity(0.5))
 
-                Divider()
+                Rectangle()
+                    .fill(Color.batCyan.opacity(0.2))
+                    .frame(height: 1)
 
                 // Calendar days
                 let days = generateCalendarDays()
@@ -60,13 +74,17 @@ struct CalendarView: View {
                         }
                     }
                     if rowIndex < rows.count - 1 {
-                        Divider()
+                        Rectangle()
+                            .fill(Color.batMidGray.opacity(0.3))
+                            .frame(height: 0.5)
                     }
                 }
 
                 Spacer()
             }
+            .background(Color.batBlack)
         }
+        .background(Color.batBlack)
     }
 
     private func previousMonth() {
@@ -152,38 +170,43 @@ struct CalendarDayCell: View {
     }
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 4) {
+        VStack(alignment: .leading, spacing: 3) {
+            // Day number - Batman style
             Text(dayNumber)
-                .font(.system(size: 12, weight: isToday ? .bold : .regular))
-                .foregroundColor(isCurrentMonth ? (isToday ? .white : .primary) : .secondary)
-                .frame(width: 20, height: 20)
-                .background(isToday ? Color.accentColor : Color.clear)
-                .clipShape(Circle())
+                .font(.system(size: 11, weight: isToday ? .bold : .medium, design: .monospaced))
+                .foregroundColor(isCurrentMonth ? (isToday ? .batBlack : .batTextPrimary) : .batTextTertiary)
+                .frame(width: 18, height: 18)
+                .background(isToday ? Color.batCyan : Color.clear)
+                .overlay(
+                    Rectangle()
+                        .strokeBorder(isToday ? Color.batCyan : Color.clear, lineWidth: 1)
+                )
+                .shadow(color: isToday ? Color.batCyan.opacity(0.6) : Color.clear, radius: 4)
 
             if !subscriptions.isEmpty {
-                VStack(alignment: .leading, spacing: 2) {
+                VStack(alignment: .leading, spacing: 1) {
                     ForEach(subscriptions.prefix(2)) { subscription in
                         let category = dataManager.getCategory(for: subscription)
                         HStack(spacing: 2) {
-                            Circle()
-                                .fill(category?.displayColor ?? Color.gray)
-                                .frame(width: 4, height: 4)
-                            Text(subscription.name)
-                                .font(.system(size: 8))
+                            Rectangle()
+                                .fill(category?.displayColor ?? Color.batCyan)
+                                .frame(width: 3, height: 3)
+                            Text(subscription.name.prefix(6).uppercased())
+                                .font(.system(size: 7, design: .monospaced))
                                 .lineLimit(1)
-                                .foregroundColor(.primary)
+                                .foregroundColor(.batTextSecondary)
                         }
                     }
 
                     if subscriptions.count > 2 {
-                        Text("+\(subscriptions.count - 2) more")
-                            .font(.system(size: 7))
-                            .foregroundColor(.secondary)
+                        Text("+\(subscriptions.count - 2)")
+                            .font(.system(size: 6, design: .monospaced))
+                            .foregroundColor(.batTextTertiary)
                     }
 
                     Text("$\(String(format: "%.0f", totalCost))")
-                        .font(.system(size: 9, weight: .semibold))
-                        .foregroundColor(.accentColor)
+                        .font(.system(size: 8, weight: .bold, design: .monospaced))
+                        .foregroundColor(.batGreen)
                 }
             }
 
@@ -192,10 +215,10 @@ struct CalendarDayCell: View {
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
         .frame(height: 70)
         .padding(4)
-        .background(isCurrentMonth ? Color(NSColor.controlBackgroundColor).opacity(0.3) : Color.clear)
+        .background(isCurrentMonth ? Color.batDarkGray.opacity(0.4) : Color.batBlack.opacity(0.2))
         .overlay(
             Rectangle()
-                .stroke(Color.gray.opacity(0.2), lineWidth: 0.5)
+                .stroke(Color.batMidGray.opacity(0.3), lineWidth: 0.5)
         )
     }
 }
