@@ -77,24 +77,33 @@ struct BatTooltipModifier: ViewModifier {
             .overlay(
                 Group {
                     if isHovering {
-                        Text(text.uppercased())
-                            .font(.system(size: 9, weight: .medium, design: .monospaced))
-                            .foregroundColor(.batCyan)
-                            .tracking(1)
-                            .padding(.horizontal, 8)
-                            .padding(.vertical, 4)
-                            .background(Color.batBlack)
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 2)
-                                    .strokeBorder(Color.batCyan.opacity(0.5), lineWidth: 1)
-                            )
-                            .cornerRadius(2)
-                            .shadow(color: Color.batCyan.opacity(0.4), radius: 4, x: 0, y: 0)
-                            .offset(y: -28)
-                            .transition(.opacity)
-                            .animation(.easeInOut(duration: 0.15), value: isHovering)
+                        VStack {
+                            Text(text.uppercased())
+                                .font(.system(size: 9, weight: .medium, design: .monospaced))
+                                .foregroundColor(.batCyan)
+                                .tracking(1)
+                                .padding(.horizontal, 8)
+                                .padding(.vertical, 4)
+                                .background(
+                                    RoundedRectangle(cornerRadius: 2)
+                                        .fill(Color.batBlack)
+                                        .overlay(
+                                            RoundedRectangle(cornerRadius: 2)
+                                                .strokeBorder(Color.batCyan.opacity(0.5), lineWidth: 1)
+                                        )
+                                        .shadow(color: Color.batCyan.opacity(0.4), radius: 4, x: 0, y: 0)
+                                )
+                                .fixedSize()
+
+                            Spacer()
+                        }
+                        .frame(height: 100)
+                        .offset(y: -30)
+                        .zIndex(1000)
+                        .allowsHitTesting(false)
                     }
-                }
+                },
+                alignment: .top
             )
     }
 }
