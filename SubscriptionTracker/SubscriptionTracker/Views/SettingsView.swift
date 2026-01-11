@@ -15,43 +15,49 @@ struct SettingsView: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            // Section selector
-            HStack(spacing: 0) {
+            // Section selector - Batman style
+            HStack(spacing: 2) {
                 Button(action: { selectedSection = .categories }) {
-                    Text("Categories")
+                    Text("CATEGORIES")
+                        .font(.system(size: 10, weight: .bold, design: .monospaced))
+                        .tracking(1)
                         .frame(maxWidth: .infinity)
-                        .padding(.vertical, 8)
-                        .background(selectedSection == .categories ? Color.accentColor.opacity(0.1) : Color.clear)
-                        .foregroundColor(selectedSection == .categories ? .accentColor : .gray)
+                        .padding(.vertical, 10)
+                        .batButton(isSelected: selectedSection == .categories)
                 }
                 .buttonStyle(.plain)
 
                 Button(action: { selectedSection = .tags }) {
-                    Text("Tags")
+                    Text("TAGS")
+                        .font(.system(size: 10, weight: .bold, design: .monospaced))
+                        .tracking(1)
                         .frame(maxWidth: .infinity)
-                        .padding(.vertical, 8)
-                        .background(selectedSection == .tags ? Color.accentColor.opacity(0.1) : Color.clear)
-                        .foregroundColor(selectedSection == .tags ? .accentColor : .gray)
+                        .padding(.vertical, 10)
+                        .batButton(isSelected: selectedSection == .tags)
                 }
                 .buttonStyle(.plain)
             }
-            .padding(.horizontal)
-            .background(Color(NSColor.controlBackgroundColor).opacity(0.5))
+            .padding(8)
+            .background(Color.batDarkGray)
 
-            Divider()
+            Rectangle()
+                .fill(Color.batMidGray.opacity(0.5))
+                .frame(height: 1)
 
             // Content
             ScrollView {
-                VStack(spacing: 16) {
+                VStack(spacing: 12) {
                     if selectedSection == .categories {
                         categoriesSection
                     } else {
                         tagsSection
                     }
                 }
-                .padding()
+                .padding(12)
             }
+            .background(Color.batBlack)
         }
+        .background(Color.batBlack)
         .sheet(isPresented: $showingAddCategory) {
             CategoryEditView(category: nil)
         }
@@ -67,29 +73,33 @@ struct SettingsView: View {
     }
 
     private var categoriesSection: some View {
-        VStack(alignment: .leading, spacing: 12) {
+        VStack(alignment: .leading, spacing: 10) {
             HStack {
-                Text("Manage Categories")
-                    .font(.system(size: 14, weight: .semibold))
+                Text("[ CATEGORY_DATABASE ]")
+                    .font(.system(size: 11, weight: .bold, design: .monospaced))
+                    .foregroundColor(.batTextPrimary)
+                    .tracking(2)
                 Spacer()
                 Button(action: { showingAddCategory = true }) {
-                    Image(systemName: "plus.circle.fill")
-                        .foregroundColor(.accentColor)
+                    Image(systemName: "plus.square.fill")
+                        .foregroundColor(.batCyan)
+                        .imageScale(.medium)
+                        .batGlow(color: .batCyan, radius: 2)
                 }
                 .buttonStyle(.plain)
             }
 
             if dataManager.categories.isEmpty {
-                VStack(spacing: 12) {
-                    Image(systemName: "folder")
-                        .font(.system(size: 48))
-                        .foregroundColor(.gray)
-                    Text("No categories yet")
-                        .font(.system(size: 12))
-                        .foregroundColor(.secondary)
+                VStack(spacing: 14) {
+                    Image(systemName: "folder.badge.questionmark")
+                        .font(.system(size: 54))
+                        .foregroundColor(.batTextTertiary)
+                    Text("[ NO_CATEGORIES ]")
+                        .font(.system(size: 11, design: .monospaced))
+                        .foregroundColor(.batTextSecondary)
                 }
                 .frame(maxWidth: .infinity)
-                .padding(.vertical, 40)
+                .padding(.vertical, 50)
             } else {
                 ForEach(dataManager.categories) { category in
                     CategoryRow(category: category) {
@@ -101,29 +111,33 @@ struct SettingsView: View {
     }
 
     private var tagsSection: some View {
-        VStack(alignment: .leading, spacing: 12) {
+        VStack(alignment: .leading, spacing: 10) {
             HStack {
-                Text("Manage Tags")
-                    .font(.system(size: 14, weight: .semibold))
+                Text("[ TAG_DATABASE ]")
+                    .font(.system(size: 11, weight: .bold, design: .monospaced))
+                    .foregroundColor(.batTextPrimary)
+                    .tracking(2)
                 Spacer()
                 Button(action: { showingAddTag = true }) {
-                    Image(systemName: "plus.circle.fill")
-                        .foregroundColor(.accentColor)
+                    Image(systemName: "plus.square.fill")
+                        .foregroundColor(.batCyan)
+                        .imageScale(.medium)
+                        .batGlow(color: .batCyan, radius: 2)
                 }
                 .buttonStyle(.plain)
             }
 
             if dataManager.tags.isEmpty {
-                VStack(spacing: 12) {
-                    Image(systemName: "tag")
-                        .font(.system(size: 48))
-                        .foregroundColor(.gray)
-                    Text("No tags yet")
-                        .font(.system(size: 12))
-                        .foregroundColor(.secondary)
+                VStack(spacing: 14) {
+                    Image(systemName: "tag.slash")
+                        .font(.system(size: 54))
+                        .foregroundColor(.batTextTertiary)
+                    Text("[ NO_TAGS ]")
+                        .font(.system(size: 11, design: .monospaced))
+                        .foregroundColor(.batTextSecondary)
                 }
                 .frame(maxWidth: .infinity)
-                .padding(.vertical, 40)
+                .padding(.vertical, 50)
             } else {
                 ForEach(dataManager.tags) { tag in
                     TagRow(tag: tag) {
@@ -141,23 +155,27 @@ struct CategoryRow: View {
 
     var body: some View {
         Button(action: onTap) {
-            HStack(spacing: 12) {
-                Circle()
+            HStack(spacing: 10) {
+                Rectangle()
                     .fill(category.displayColor)
-                    .frame(width: 20, height: 20)
+                    .frame(width: 8, height: 8)
 
-                Text(category.name)
-                    .font(.system(size: 13))
+                Text(category.name.uppercased())
+                    .font(.system(size: 11, weight: .medium, design: .monospaced))
+                    .foregroundColor(.batTextPrimary)
 
                 Spacer()
 
                 Image(systemName: "chevron.right")
-                    .font(.system(size: 11))
-                    .foregroundColor(.secondary)
+                    .font(.system(size: 10))
+                    .foregroundColor(.batCyan)
             }
-            .padding(12)
-            .background(Color(NSColor.controlBackgroundColor))
-            .cornerRadius(8)
+            .padding(10)
+            .background(Color.batDarkGray)
+            .overlay(
+                Rectangle()
+                    .strokeBorder(Color.batMidGray.opacity(0.5), lineWidth: 1)
+            )
         }
         .buttonStyle(.plain)
     }
@@ -169,23 +187,27 @@ struct TagRow: View {
 
     var body: some View {
         Button(action: onTap) {
-            HStack(spacing: 12) {
-                Circle()
+            HStack(spacing: 10) {
+                Rectangle()
                     .fill(tag.displayColor)
-                    .frame(width: 20, height: 20)
+                    .frame(width: 8, height: 8)
 
-                Text(tag.name)
-                    .font(.system(size: 13))
+                Text(tag.name.uppercased())
+                    .font(.system(size: 11, weight: .medium, design: .monospaced))
+                    .foregroundColor(.batTextPrimary)
 
                 Spacer()
 
                 Image(systemName: "chevron.right")
-                    .font(.system(size: 11))
-                    .foregroundColor(.secondary)
+                    .font(.system(size: 10))
+                    .foregroundColor(.batCyan)
             }
-            .padding(12)
-            .background(Color(NSColor.controlBackgroundColor))
-            .cornerRadius(8)
+            .padding(10)
+            .background(Color.batDarkGray)
+            .overlay(
+                Rectangle()
+                    .strokeBorder(Color.batMidGray.opacity(0.5), lineWidth: 1)
+            )
         }
         .buttonStyle(.plain)
     }
@@ -211,48 +233,140 @@ struct CategoryEditView: View {
     }
 
     var body: some View {
-        VStack(spacing: 16) {
-            Text(category == nil ? "New Category" : "Edit Category")
-                .font(.system(size: 16, weight: .semibold))
+        VStack(spacing: 0) {
+            // Header - Batman style
+            HStack {
+                Image(systemName: category == nil ? "folder.badge.plus" : "pencil.line")
+                    .foregroundColor(.batCyan)
+                    .batGlow(color: .batCyan, radius: 2)
 
-            VStack(alignment: .leading, spacing: 6) {
-                Text("Name")
-                    .font(.system(size: 12, weight: .medium))
-                    .foregroundColor(.secondary)
-                TextField("Category name", text: $name)
-                    .textFieldStyle(.roundedBorder)
+                Text(category == nil ? "[ NEW_CATEGORY ]" : "[ EDIT_CATEGORY ]")
+                    .font(.system(size: 12, weight: .bold, design: .monospaced))
+                    .foregroundColor(.batTextPrimary)
+                    .tracking(2)
+
+                Spacer()
+
+                Button(action: { dismiss() }) {
+                    Image(systemName: "xmark")
+                        .foregroundColor(.batRed)
+                        .imageScale(.small)
+                }
+                .buttonStyle(.plain)
             }
+            .padding(12)
+            .background(Color.batBlack)
+            .overlay(
+                Rectangle()
+                    .frame(height: 1)
+                    .foregroundColor(Color.batCyan.opacity(0.3)),
+                alignment: .bottom
+            )
 
-            VStack(alignment: .leading, spacing: 6) {
-                Text("Color")
-                    .font(.system(size: 12, weight: .medium))
-                    .foregroundColor(.secondary)
-                ColorPicker("", selection: $color)
-                    .labelsHidden()
+            // Form
+            VStack(alignment: .leading, spacing: 14) {
+                VStack(alignment: .leading, spacing: 6) {
+                    Text("[ NAME ]")
+                        .font(.system(size: 10, weight: .bold, design: .monospaced))
+                        .foregroundColor(.batTextTertiary)
+                        .tracking(1)
+                    TextField("CATEGORY_NAME", text: $name)
+                        .textFieldStyle(.plain)
+                        .font(.system(size: 12, design: .monospaced))
+                        .foregroundColor(.batTextPrimary)
+                        .padding(10)
+                        .background(Color.batDarkGray)
+                        .overlay(
+                            Rectangle()
+                                .strokeBorder(Color.batMidGray.opacity(0.5), lineWidth: 1)
+                        )
+                }
+
+                VStack(alignment: .leading, spacing: 6) {
+                    Text("[ COLOR ]")
+                        .font(.system(size: 10, weight: .bold, design: .monospaced))
+                        .foregroundColor(.batTextTertiary)
+                        .tracking(1)
+                    ColorPicker("", selection: $color)
+                        .labelsHidden()
+                        .padding(10)
+                        .background(Color.batDarkGray)
+                        .overlay(
+                            Rectangle()
+                                .strokeBorder(Color.batMidGray.opacity(0.5), lineWidth: 1)
+                        )
+                }
             }
+            .padding(14)
+            .background(Color.batBlack)
 
+            Rectangle()
+                .fill(Color.batCyan.opacity(0.3))
+                .frame(height: 1)
+
+            // Footer
             HStack(spacing: 12) {
                 if category != nil {
-                    Button("Delete") {
-                        showingDeleteAlert = true
+                    Button(action: { showingDeleteAlert = true }) {
+                        HStack(spacing: 6) {
+                            Image(systemName: "trash")
+                                .imageScale(.small)
+                            Text("DELETE")
+                                .font(.system(size: 10, weight: .bold, design: .monospaced))
+                        }
+                        .foregroundColor(.batRed)
+                        .padding(.horizontal, 12)
+                        .padding(.vertical, 8)
+                        .background(Color.batDarkGray)
+                        .overlay(
+                            Rectangle()
+                                .strokeBorder(Color.batRed.opacity(0.5), lineWidth: 1)
+                        )
                     }
-                    .foregroundColor(.red)
+                    .buttonStyle(.plain)
                 }
 
                 Spacer()
 
-                Button("Cancel") {
-                    dismiss()
+                Button(action: { dismiss() }) {
+                    Text("CANCEL")
+                        .font(.system(size: 10, weight: .bold, design: .monospaced))
+                        .foregroundColor(.batTextSecondary)
+                        .padding(.horizontal, 12)
+                        .padding(.vertical, 8)
+                        .background(Color.batDarkGray)
+                        .overlay(
+                            Rectangle()
+                                .strokeBorder(Color.batMidGray.opacity(0.5), lineWidth: 1)
+                        )
                 }
+                .buttonStyle(.plain)
 
-                Button("Save") {
-                    saveCategory()
+                Button(action: { saveCategory() }) {
+                    HStack(spacing: 6) {
+                        Image(systemName: "checkmark")
+                            .imageScale(.small)
+                        Text("SAVE")
+                            .font(.system(size: 10, weight: .bold, design: .monospaced))
+                    }
+                    .foregroundColor(isValid ? .batBlack : .batTextTertiary)
+                    .padding(.horizontal, 16)
+                    .padding(.vertical, 8)
+                    .background(isValid ? Color.batCyan : Color.batDarkGray)
+                    .overlay(
+                        Rectangle()
+                            .strokeBorder(isValid ? Color.batCyan : Color.batMidGray.opacity(0.5), lineWidth: 1)
+                    )
+                    .shadow(color: isValid ? Color.batCyan.opacity(0.5) : Color.clear, radius: 4)
                 }
+                .buttonStyle(.plain)
                 .disabled(!isValid)
             }
+            .padding(12)
+            .background(Color.batBlack)
         }
-        .padding()
-        .frame(width: 300)
+        .frame(width: 350, height: 280)
+        .background(Color.batBlack)
         .alert("Delete Category", isPresented: $showingDeleteAlert) {
             Button("Cancel", role: .cancel) { }
             Button("Delete", role: .destructive) {
@@ -301,48 +415,140 @@ struct TagEditView: View {
     }
 
     var body: some View {
-        VStack(spacing: 16) {
-            Text(tag == nil ? "New Tag" : "Edit Tag")
-                .font(.system(size: 16, weight: .semibold))
+        VStack(spacing: 0) {
+            // Header - Batman style
+            HStack {
+                Image(systemName: tag == nil ? "tag.fill" : "pencil.line")
+                    .foregroundColor(.batCyan)
+                    .batGlow(color: .batCyan, radius: 2)
 
-            VStack(alignment: .leading, spacing: 6) {
-                Text("Name")
-                    .font(.system(size: 12, weight: .medium))
-                    .foregroundColor(.secondary)
-                TextField("Tag name", text: $name)
-                    .textFieldStyle(.roundedBorder)
+                Text(tag == nil ? "[ NEW_TAG ]" : "[ EDIT_TAG ]")
+                    .font(.system(size: 12, weight: .bold, design: .monospaced))
+                    .foregroundColor(.batTextPrimary)
+                    .tracking(2)
+
+                Spacer()
+
+                Button(action: { dismiss() }) {
+                    Image(systemName: "xmark")
+                        .foregroundColor(.batRed)
+                        .imageScale(.small)
+                }
+                .buttonStyle(.plain)
             }
+            .padding(12)
+            .background(Color.batBlack)
+            .overlay(
+                Rectangle()
+                    .frame(height: 1)
+                    .foregroundColor(Color.batCyan.opacity(0.3)),
+                alignment: .bottom
+            )
 
-            VStack(alignment: .leading, spacing: 6) {
-                Text("Color")
-                    .font(.system(size: 12, weight: .medium))
-                    .foregroundColor(.secondary)
-                ColorPicker("", selection: $color)
-                    .labelsHidden()
+            // Form
+            VStack(alignment: .leading, spacing: 14) {
+                VStack(alignment: .leading, spacing: 6) {
+                    Text("[ NAME ]")
+                        .font(.system(size: 10, weight: .bold, design: .monospaced))
+                        .foregroundColor(.batTextTertiary)
+                        .tracking(1)
+                    TextField("TAG_NAME", text: $name)
+                        .textFieldStyle(.plain)
+                        .font(.system(size: 12, design: .monospaced))
+                        .foregroundColor(.batTextPrimary)
+                        .padding(10)
+                        .background(Color.batDarkGray)
+                        .overlay(
+                            Rectangle()
+                                .strokeBorder(Color.batMidGray.opacity(0.5), lineWidth: 1)
+                        )
+                }
+
+                VStack(alignment: .leading, spacing: 6) {
+                    Text("[ COLOR ]")
+                        .font(.system(size: 10, weight: .bold, design: .monospaced))
+                        .foregroundColor(.batTextTertiary)
+                        .tracking(1)
+                    ColorPicker("", selection: $color)
+                        .labelsHidden()
+                        .padding(10)
+                        .background(Color.batDarkGray)
+                        .overlay(
+                            Rectangle()
+                                .strokeBorder(Color.batMidGray.opacity(0.5), lineWidth: 1)
+                        )
+                }
             }
+            .padding(14)
+            .background(Color.batBlack)
 
+            Rectangle()
+                .fill(Color.batCyan.opacity(0.3))
+                .frame(height: 1)
+
+            // Footer
             HStack(spacing: 12) {
                 if tag != nil {
-                    Button("Delete") {
-                        showingDeleteAlert = true
+                    Button(action: { showingDeleteAlert = true }) {
+                        HStack(spacing: 6) {
+                            Image(systemName: "trash")
+                                .imageScale(.small)
+                            Text("DELETE")
+                                .font(.system(size: 10, weight: .bold, design: .monospaced))
+                        }
+                        .foregroundColor(.batRed)
+                        .padding(.horizontal, 12)
+                        .padding(.vertical, 8)
+                        .background(Color.batDarkGray)
+                        .overlay(
+                            Rectangle()
+                                .strokeBorder(Color.batRed.opacity(0.5), lineWidth: 1)
+                        )
                     }
-                    .foregroundColor(.red)
+                    .buttonStyle(.plain)
                 }
 
                 Spacer()
 
-                Button("Cancel") {
-                    dismiss()
+                Button(action: { dismiss() }) {
+                    Text("CANCEL")
+                        .font(.system(size: 10, weight: .bold, design: .monospaced))
+                        .foregroundColor(.batTextSecondary)
+                        .padding(.horizontal, 12)
+                        .padding(.vertical, 8)
+                        .background(Color.batDarkGray)
+                        .overlay(
+                            Rectangle()
+                                .strokeBorder(Color.batMidGray.opacity(0.5), lineWidth: 1)
+                        )
                 }
+                .buttonStyle(.plain)
 
-                Button("Save") {
-                    saveTag()
+                Button(action: { saveTag() }) {
+                    HStack(spacing: 6) {
+                        Image(systemName: "checkmark")
+                            .imageScale(.small)
+                        Text("SAVE")
+                            .font(.system(size: 10, weight: .bold, design: .monospaced))
+                    }
+                    .foregroundColor(isValid ? .batBlack : .batTextTertiary)
+                    .padding(.horizontal, 16)
+                    .padding(.vertical, 8)
+                    .background(isValid ? Color.batCyan : Color.batDarkGray)
+                    .overlay(
+                        Rectangle()
+                            .strokeBorder(isValid ? Color.batCyan : Color.batMidGray.opacity(0.5), lineWidth: 1)
+                    )
+                    .shadow(color: isValid ? Color.batCyan.opacity(0.5) : Color.clear, radius: 4)
                 }
+                .buttonStyle(.plain)
                 .disabled(!isValid)
             }
+            .padding(12)
+            .background(Color.batBlack)
         }
-        .padding()
-        .frame(width: 300)
+        .frame(width: 350, height: 280)
+        .background(Color.batBlack)
         .alert("Delete Tag", isPresented: $showingDeleteAlert) {
             Button("Cancel", role: .cancel) { }
             Button("Delete", role: .destructive) {
