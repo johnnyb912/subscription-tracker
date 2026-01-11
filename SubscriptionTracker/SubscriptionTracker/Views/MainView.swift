@@ -38,7 +38,7 @@ struct MainView: View {
                         .imageScale(.small)
                 }
                 .buttonStyle(.borderless)
-                .batTooltip("Shutdown", edge: .trailing)
+                .batTooltip("Shutdown", horizontalEdge: .trailing, verticalEdge: .top)
             }
             .padding(.horizontal, 16)
             .padding(.vertical, 12)

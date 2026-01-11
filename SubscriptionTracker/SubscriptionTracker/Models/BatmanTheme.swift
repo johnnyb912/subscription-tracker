@@ -67,8 +67,17 @@ struct BatButtonModifier: ViewModifier {
 
 struct BatTooltipModifier: ViewModifier {
     let text: String
-    let edge: Edge.Set
+    let horizontalEdge: HorizontalEdge?
+    let verticalEdge: VerticalEdge?
     @State private var isHovering = false
+
+    enum HorizontalEdge {
+        case leading, trailing
+    }
+
+    enum VerticalEdge {
+        case top, bottom
+    }
 
     func body(content: Content) -> some View {
         content
@@ -108,29 +117,34 @@ struct BatTooltipModifier: ViewModifier {
     }
 
     private var alignment: Alignment {
-        switch edge {
-        case .top: return .bottom
-        case .bottom: return .top
-        case .leading: return .trailing
-        case .trailing: return .leading
-        default: return .top
+        let vertical: VerticalAlignment
+        let horizontal: HorizontalAlignment
+
+        // Determine vertical alignment
+        if let vEdge = verticalEdge {
+            vertical = vEdge == .top ? .bottom : .top
+        } else {
+            vertical = .top
         }
+
+        // Determine horizontal alignment
+        if let hEdge = horizontalEdge {
+            horizontal = hEdge == .leading ? .trailing : .leading
+        } else {
+            horizontal = .center
+        }
+
+        return Alignment(horizontal: horizontal, vertical: vertical)
     }
 
     private var offsetX: CGFloat {
-        switch edge {
-        case .leading: return -8
-        case .trailing: return 8
-        default: return 0
-        }
+        guard let hEdge = horizontalEdge else { return 0 }
+        return hEdge == .leading ? -8 : 8
     }
 
     private var offsetY: CGFloat {
-        switch edge {
-        case .top: return 8
-        case .bottom: return -8
-        default: return -30
-        }
+        guard let vEdge = verticalEdge else { return -30 }
+        return vEdge == .top ? 8 : -8
     }
 }
 
@@ -147,8 +161,12 @@ extension View {
         modifier(BatButtonModifier(isSelected: isSelected))
     }
 
-    func batTooltip(_ text: String, edge: Edge.Set = .top) -> some View {
-        modifier(BatTooltipModifier(text: text, edge: edge))
+    func batTooltip(
+        _ text: String,
+        horizontalEdge: BatTooltipModifier.HorizontalEdge? = nil,
+        verticalEdge: BatTooltipModifier.VerticalEdge? = nil
+    ) -> some View {
+        modifier(BatTooltipModifier(text: text, horizontalEdge: horizontalEdge, verticalEdge: verticalEdge))
     }
 }
 
