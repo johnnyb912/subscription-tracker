@@ -75,7 +75,7 @@ struct SettingsView: View {
     private var categoriesSection: some View {
         VStack(alignment: .leading, spacing: 10) {
             HStack {
-                Text("[ CATEGORY_DATABASE ]")
+                Text("[ CATEGORY DATABASE ]")
                     .font(.system(size: 11, weight: .bold, design: .monospaced))
                     .foregroundColor(.batTextPrimary)
                     .tracking(2)
@@ -94,7 +94,7 @@ struct SettingsView: View {
                     Image(systemName: "folder.badge.questionmark")
                         .font(.system(size: 54))
                         .foregroundColor(.batTextTertiary)
-                    Text("[ NO_CATEGORIES ]")
+                    Text("[ NO CATEGORIES ]")
                         .font(.system(size: 11, design: .monospaced))
                         .foregroundColor(.batTextSecondary)
                 }
@@ -113,7 +113,7 @@ struct SettingsView: View {
     private var tagsSection: some View {
         VStack(alignment: .leading, spacing: 10) {
             HStack {
-                Text("[ TAG_DATABASE ]")
+                Text("[ TAG DATABASE ]")
                     .font(.system(size: 11, weight: .bold, design: .monospaced))
                     .foregroundColor(.batTextPrimary)
                     .tracking(2)
@@ -132,7 +132,7 @@ struct SettingsView: View {
                     Image(systemName: "tag.slash")
                         .font(.system(size: 54))
                         .foregroundColor(.batTextTertiary)
-                    Text("[ NO_TAGS ]")
+                    Text("[ NO TAGS ]")
                         .font(.system(size: 11, design: .monospaced))
                         .foregroundColor(.batTextSecondary)
                 }
@@ -240,7 +240,7 @@ struct CategoryEditView: View {
                     .foregroundColor(.batCyan)
                     .batGlow(color: .batCyan, radius: 2)
 
-                Text(category == nil ? "[ NEW_CATEGORY ]" : "[ EDIT_CATEGORY ]")
+                Text(category == nil ? "[ NEW CATEGORY ]" : "[ EDIT CATEGORY ]")
                     .font(.system(size: 12, weight: .bold, design: .monospaced))
                     .foregroundColor(.batTextPrimary)
                     .tracking(2)
@@ -270,7 +270,7 @@ struct CategoryEditView: View {
                         .font(.system(size: 10, weight: .bold, design: .monospaced))
                         .foregroundColor(.batTextTertiary)
                         .tracking(1)
-                    TextField("CATEGORY_NAME", text: $name)
+                    TextField("CATEGORY NAME", text: $name)
                         .textFieldStyle(.plain)
                         .font(.system(size: 12, design: .monospaced))
                         .foregroundColor(.batTextPrimary)
@@ -422,7 +422,7 @@ struct TagEditView: View {
                     .foregroundColor(.batCyan)
                     .batGlow(color: .batCyan, radius: 2)
 
-                Text(tag == nil ? "[ NEW_TAG ]" : "[ EDIT_TAG ]")
+                Text(tag == nil ? "[ NEW TAG ]" : "[ EDIT TAG ]")
                     .font(.system(size: 12, weight: .bold, design: .monospaced))
                     .foregroundColor(.batTextPrimary)
                     .tracking(2)
@@ -452,7 +452,7 @@ struct TagEditView: View {
                         .font(.system(size: 10, weight: .bold, design: .monospaced))
                         .foregroundColor(.batTextTertiary)
                         .tracking(1)
-                    TextField("TAG_NAME", text: $name)
+                    TextField("TAG NAME", text: $name)
                         .textFieldStyle(.plain)
                         .font(.system(size: 12, design: .monospaced))
                         .foregroundColor(.batTextPrimary)

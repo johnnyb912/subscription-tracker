@@ -118,3 +118,7 @@ struct TabButton: View {
         .buttonStyle(.plain)
     }
 }
+
+#Preview {
+    MainView()
+}
