@@ -68,7 +68,6 @@ struct SubscriptionListView: View {
             }
             .padding(12)
             .background(Color.batDarkGray)
-            .clipped(false)
 
             Rectangle()
                 .fill(Color.batMidGray.opacity(0.5))
@@ -154,7 +153,6 @@ struct SubscriptionListView: View {
             }
             .background(Color.batBlack)
         }
-        .clipped(false)
         .sheet(isPresented: $showingAddSheet) {
             SubscriptionEditView(subscription: nil)
         }
