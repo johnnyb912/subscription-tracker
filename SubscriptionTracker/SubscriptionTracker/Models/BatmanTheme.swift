@@ -71,13 +71,10 @@ struct BatTooltipModifier: ViewModifier {
 
     func body(content: Content) -> some View {
         content
-            .onHover { hovering in
-                isHovering = hovering
-            }
-            .overlay(
-                Group {
-                    if isHovering {
-                        VStack {
+            .background(
+                GeometryReader { geometry in
+                    ZStack {
+                        if isHovering {
                             Text(text.uppercased())
                                 .font(.system(size: 9, weight: .medium, design: .monospaced))
                                 .foregroundColor(.batCyan)
@@ -94,17 +91,21 @@ struct BatTooltipModifier: ViewModifier {
                                         .shadow(color: Color.batCyan.opacity(0.4), radius: 4, x: 0, y: 0)
                                 )
                                 .fixedSize()
-
-                            Spacer()
+                                .position(
+                                    x: geometry.size.width / 2,
+                                    y: -10
+                                )
+                                .zIndex(999)
                         }
-                        .frame(height: 100)
-                        .offset(y: -30)
-                        .zIndex(1000)
-                        .allowsHitTesting(false)
                     }
-                },
-                alignment: .top
+                    .frame(width: geometry.size.width, height: geometry.size.height)
+                    .allowsHitTesting(false)
+                }
             )
+            .onHover { hovering in
+                isHovering = hovering
+            }
+            .zIndex(isHovering ? 1000 : 0)
     }
 }
 
