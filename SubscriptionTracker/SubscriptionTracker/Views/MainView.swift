@@ -37,7 +37,7 @@ struct MainView: View {
                         .foregroundColor(.batRed)
                         .imageScale(.small)
                 }
-                .buttonStyle(.plain)
+                .buttonStyle(.borderless)
                 .help("Shutdown")
             }
             .padding(.horizontal, 16)
