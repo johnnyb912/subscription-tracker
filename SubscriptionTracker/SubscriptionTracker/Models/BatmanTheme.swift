@@ -67,42 +67,70 @@ struct BatButtonModifier: ViewModifier {
 
 struct BatTooltipModifier: ViewModifier {
     let text: String
+    let edge: Edge.Set
     @State private var isHovering = false
 
     func body(content: Content) -> some View {
-        ZStack {
-            content
-                .onHover { hovering in
-                    isHovering = hovering
-                }
-
-            if isHovering {
-                VStack {
-                    Text(text.uppercased())
-                        .font(.system(size: 9, weight: .medium, design: .monospaced))
-                        .foregroundColor(.batCyan)
-                        .tracking(1)
-                        .padding(.horizontal, 8)
-                        .padding(.vertical, 4)
-                        .background(
-                            RoundedRectangle(cornerRadius: 2)
-                                .fill(Color.batBlack)
-                                .overlay(
-                                    RoundedRectangle(cornerRadius: 2)
-                                        .strokeBorder(Color.batCyan.opacity(0.5), lineWidth: 1)
-                                )
-                                .shadow(color: Color.batCyan.opacity(0.4), radius: 4, x: 0, y: 0)
-                        )
-                        .fixedSize()
-                        .offset(y: -30)
-
-                    Spacer()
-                }
-                .allowsHitTesting(false)
-                .transition(.opacity)
+        content
+            .onHover { hovering in
+                isHovering = hovering
             }
+            .overlay(
+                Group {
+                    if isHovering {
+                        tooltipView
+                            .fixedSize()
+                            .allowsHitTesting(false)
+                            .zIndex(1000)
+                    }
+                },
+                alignment: alignment
+            )
+    }
+
+    private var tooltipView: some View {
+        Text(text.uppercased())
+            .font(.system(size: 9, weight: .medium, design: .monospaced))
+            .foregroundColor(.batCyan)
+            .tracking(1)
+            .padding(.horizontal, 8)
+            .padding(.vertical, 4)
+            .background(
+                RoundedRectangle(cornerRadius: 2)
+                    .fill(Color.batBlack)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 2)
+                            .strokeBorder(Color.batCyan.opacity(0.5), lineWidth: 1)
+                    )
+                    .shadow(color: Color.batCyan.opacity(0.4), radius: 4, x: 0, y: 0)
+            )
+            .offset(x: offsetX, y: offsetY)
+    }
+
+    private var alignment: Alignment {
+        switch edge {
+        case .top: return .bottom
+        case .bottom: return .top
+        case .leading: return .trailing
+        case .trailing: return .leading
+        default: return .top
         }
-        .zIndex(isHovering ? 999 : 0)
+    }
+
+    private var offsetX: CGFloat {
+        switch edge {
+        case .leading: return -8
+        case .trailing: return 8
+        default: return 0
+        }
+    }
+
+    private var offsetY: CGFloat {
+        switch edge {
+        case .top: return 8
+        case .bottom: return -8
+        default: return -30
+        }
     }
 }
 
@@ -119,8 +147,8 @@ extension View {
         modifier(BatButtonModifier(isSelected: isSelected))
     }
 
-    func batTooltip(_ text: String) -> some View {
-        modifier(BatTooltipModifier(text: text))
+    func batTooltip(_ text: String, edge: Edge.Set = .top) -> some View {
+        modifier(BatTooltipModifier(text: text, edge: edge))
     }
 }
 

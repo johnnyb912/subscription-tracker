@@ -47,7 +47,7 @@ struct SubscriptionListView: View {
                         .imageScale(.small)
                 }
                 .buttonStyle(.plain)
-                .batTooltip("Import")
+                .batTooltip("Import", edge: .trailing)
 
                 Button(action: { CSVManager.shared.exportToCSV() }) {
                     Image(systemName: "arrow.up.doc")
@@ -55,7 +55,7 @@ struct SubscriptionListView: View {
                         .imageScale(.small)
                 }
                 .buttonStyle(.plain)
-                .batTooltip("Export")
+                .batTooltip("Export", edge: .trailing)
 
                 Button(action: { showingAddSheet = true }) {
                     Image(systemName: "plus.square.fill")
@@ -64,7 +64,7 @@ struct SubscriptionListView: View {
                         .batGlow(color: .batCyan, radius: 2)
                 }
                 .buttonStyle(.plain)
-                .batTooltip("Add New")
+                .batTooltip("Add New", edge: .trailing)
             }
             .padding(12)
             .background(Color.batDarkGray)
