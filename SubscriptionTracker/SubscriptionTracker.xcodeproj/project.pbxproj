@@ -343,7 +343,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = 2FC9JZ46NP;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = NO;
@@ -371,7 +371,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = 2FC9JZ46NP;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = NO;
@@ -393,20 +393,20 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		GG0002 /* Build configuration list for PBXProject "SubscriptionTracker" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				HH0001 /* Debug */,
-				HH0002 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
 		FF0002 /* Build configuration list for PBXNativeTarget "SubscriptionTracker" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				HH0003 /* Debug */,
 				HH0004 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		GG0002 /* Build configuration list for PBXProject "SubscriptionTracker" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				HH0001 /* Debug */,
+				HH0002 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

@@ -47,7 +47,7 @@ struct SubscriptionListView: View {
                         .imageScale(.small)
                 }
                 .buttonStyle(.plain)
-                .batTooltip("Import", horizontalEdge: .trailing)
+                .batTooltip("Import", horizontalEdge: .leading)
 
                 Button(action: { CSVManager.shared.exportToCSV() }) {
                     Image(systemName: "arrow.up.doc")
@@ -55,7 +55,7 @@ struct SubscriptionListView: View {
                         .imageScale(.small)
                 }
                 .buttonStyle(.plain)
-                .batTooltip("Export", horizontalEdge: .trailing)
+                .batTooltip("Export", horizontalEdge: .leading)
 
                 Button(action: { showingAddSheet = true }) {
                     Image(systemName: "plus.square.fill")
@@ -64,7 +64,7 @@ struct SubscriptionListView: View {
                         .batGlow(color: .batCyan, radius: 2)
                 }
                 .buttonStyle(.plain)
-                .batTooltip("Add New", horizontalEdge: .trailing)
+                .batTooltip("Add New", horizontalEdge: .leading)
             }
             .padding(12)
             .background(Color.batDarkGray)
@@ -276,4 +276,8 @@ struct SubscriptionRow: View {
             return "NEXT: \(formatter.string(from: subscription.nextPaymentDate))"
         }
     }
+}
+
+#Preview {
+    MainView()
 }
