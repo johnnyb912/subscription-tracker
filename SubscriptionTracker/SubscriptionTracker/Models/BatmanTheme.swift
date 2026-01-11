@@ -65,6 +65,40 @@ struct BatButtonModifier: ViewModifier {
     }
 }
 
+struct BatTooltipModifier: ViewModifier {
+    let text: String
+    @State private var isHovering = false
+
+    func body(content: Content) -> some View {
+        content
+            .onHover { hovering in
+                isHovering = hovering
+            }
+            .overlay(
+                Group {
+                    if isHovering {
+                        Text(text.uppercased())
+                            .font(.system(size: 9, weight: .medium, design: .monospaced))
+                            .foregroundColor(.batCyan)
+                            .tracking(1)
+                            .padding(.horizontal, 8)
+                            .padding(.vertical, 4)
+                            .background(Color.batBlack)
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 2)
+                                    .strokeBorder(Color.batCyan.opacity(0.5), lineWidth: 1)
+                            )
+                            .cornerRadius(2)
+                            .shadow(color: Color.batCyan.opacity(0.4), radius: 4, x: 0, y: 0)
+                            .offset(y: -28)
+                            .transition(.opacity)
+                            .animation(.easeInOut(duration: 0.15), value: isHovering)
+                    }
+                }
+            )
+    }
+}
+
 extension View {
     func batCard(glowing: Bool = false) -> some View {
         modifier(BatCardModifier(glowing: glowing))
@@ -76,6 +110,10 @@ extension View {
 
     func batButton(isSelected: Bool = false) -> some View {
         modifier(BatButtonModifier(isSelected: isSelected))
+    }
+
+    func batTooltip(_ text: String) -> some View {
+        modifier(BatTooltipModifier(text: text))
     }
 }
 
