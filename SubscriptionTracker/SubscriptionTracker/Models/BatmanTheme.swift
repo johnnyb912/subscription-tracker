@@ -113,7 +113,8 @@ struct BatTooltipModifier: ViewModifier {
                     )
                     .shadow(color: Color.batCyan.opacity(0.4), radius: 4, x: 0, y: 0)
             )
-            .offset(x: offsetX, y: offsetY)
+            .offset(x: offsetX, y: -2)
+//            .offset(x: offsetX, y: offsetY)
     }
 
     private var alignment: Alignment {
@@ -139,7 +140,7 @@ struct BatTooltipModifier: ViewModifier {
 
     private var offsetX: CGFloat {
         guard let hEdge = horizontalEdge else { return 0 }
-        return hEdge == .leading ? -8 : 8
+        return hEdge == .leading ? -22 : 12
     }
 
     private var offsetY: CGFloat {

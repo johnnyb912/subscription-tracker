@@ -38,7 +38,7 @@ struct MainView: View {
                         .imageScale(.small)
                 }
                 .buttonStyle(.borderless)
-                .batTooltip("Shutdown", horizontalEdge: .trailing, verticalEdge: .top)
+                .batTooltip("Shutdown", horizontalEdge: .leading, verticalEdge: .bottom)
             }
             .padding(.horizontal, 16)
             .padding(.vertical, 12)
@@ -117,4 +117,8 @@ struct TabButton: View {
         }
         .buttonStyle(.plain)
     }
+}
+
+#Preview {
+    MainView()
 }

@@ -39,7 +39,7 @@ struct SubscriptionEditView: View {
                     .foregroundColor(.batCyan)
                     .batGlow(color: .batCyan, radius: 2)
 
-                Text(subscription == nil ? "[ NEW_RECORD ]" : "[ EDIT_RECORD ]")
+                Text(subscription == nil ? "[ NEW RECORD ]" : "[ EDIT RECORD ]")
                     .font(.system(size: 13, weight: .bold, design: .monospaced))
                     .foregroundColor(.batTextPrimary)
                     .tracking(2)
@@ -71,7 +71,7 @@ struct SubscriptionEditView: View {
                             .font(.system(size: 10, weight: .bold, design: .monospaced))
                             .foregroundColor(.batTextTertiary)
                             .tracking(1)
-                        TextField("ENTER_NAME", text: $name)
+                        TextField("ENTER NAME", text: $name)
                             .textFieldStyle(.plain)
                             .font(.system(size: 13, design: .monospaced))
                             .foregroundColor(.batTextPrimary)
@@ -103,7 +103,7 @@ struct SubscriptionEditView: View {
 
                     // Billing Cycle
                     VStack(alignment: .leading, spacing: 6) {
-                        Text("[ BILLING_CYCLE ]")
+                        Text("[ BILLING CYCLE ]")
                             .font(.system(size: 10, weight: .bold, design: .monospaced))
                             .foregroundColor(.batTextTertiary)
                             .tracking(1)
@@ -118,7 +118,7 @@ struct SubscriptionEditView: View {
 
                     // Next Payment Date
                     VStack(alignment: .leading, spacing: 6) {
-                        Text("[ NEXT_PAYMENT ]")
+                        Text("[ NEXT PAYMENT ]")
                             .font(.system(size: 10, weight: .bold, design: .monospaced))
                             .foregroundColor(.batTextTertiary)
                             .tracking(1)

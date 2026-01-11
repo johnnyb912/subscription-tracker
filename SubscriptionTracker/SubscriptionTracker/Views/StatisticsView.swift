@@ -41,7 +41,7 @@ struct StatisticsView: View {
 
                 // Radial chart - Glowing effect
                 VStack(alignment: .leading, spacing: 10) {
-                    Text("[ COST_DISTRIBUTION ]")
+                    Text("[ COST DISTRIBUTION ]")
                         .font(.system(size: 11, weight: .bold, design: .monospaced))
                         .foregroundColor(.batTextPrimary)
                         .tracking(2)
@@ -51,7 +51,7 @@ struct StatisticsView: View {
                             Image(systemName: "chart.pie.fill")
                                 .font(.system(size: 56))
                                 .foregroundColor(.batTextTertiary)
-                            Text("[ NO_ACTIVE_DATA ]")
+                            Text("[ NO ACTIVE DATA ]")
                                 .font(.system(size: 11, design: .monospaced))
                                 .foregroundColor(.batTextSecondary)
                         }
@@ -66,7 +66,7 @@ struct StatisticsView: View {
 
                 // Category breakdown - Tech list
                 VStack(alignment: .leading, spacing: 10) {
-                    Text("[ CATEGORY_ANALYSIS ]")
+                    Text("[ CATEGORY ANALYSIS ]")
                         .font(.system(size: 11, weight: .bold, design: .monospaced))
                         .foregroundColor(.batTextPrimary)
                         .tracking(2)
@@ -84,7 +84,7 @@ struct StatisticsView: View {
                     }
 
                     if costsByCategory.isEmpty {
-                        Text("[ NO_CATEGORY_DATA ]")
+                        Text("[ NO CATEGORY DATA ]")
                             .font(.system(size: 11, design: .monospaced))
                             .foregroundColor(.batTextSecondary)
                             .frame(maxWidth: .infinity, alignment: .center)
@@ -97,7 +97,7 @@ struct StatisticsView: View {
                 // Peak spending - Alert style
                 if let peak = dataManager.peakSpendingMonth() {
                     VStack(alignment: .leading, spacing: 10) {
-                        Text("[ PEAK_EXPENDITURE ]")
+                        Text("[ PEAK EXPENDITURE ]")
                             .font(.system(size: 11, weight: .bold, design: .monospaced))
                             .foregroundColor(.batTextPrimary)
                             .tracking(2)
@@ -108,7 +108,7 @@ struct StatisticsView: View {
                                     .font(.system(size: 18, weight: .bold, design: .monospaced))
                                     .foregroundColor(.batYellow)
                                     .batGlow(color: .batYellow, radius: 2)
-                                Text("HIGHEST_MONTHLY_CHARGE")
+                                Text("HIGHEST MONTHLY CHARGE")
                                     .font(.system(size: 9, design: .monospaced))
                                     .foregroundColor(.batTextTertiary)
                             }

@@ -23,7 +23,7 @@ struct SubscriptionListView: View {
                 Image(systemName: "magnifyingglass")
                     .foregroundColor(.batCyan)
                     .imageScale(.small)
-                TextField("SEARCH_", text: $searchText)
+                TextField("SEARCH", text: $searchText)
                     .textFieldStyle(.plain)
                     .font(.system(size: 12, design: .monospaced))
                     .foregroundColor(.batTextPrimary)
@@ -47,7 +47,7 @@ struct SubscriptionListView: View {
                         .imageScale(.small)
                 }
                 .buttonStyle(.plain)
-                .batTooltip("Import", horizontalEdge: .trailing)
+                .batTooltip("Import", horizontalEdge: .leading)
 
                 Button(action: { CSVManager.shared.exportToCSV() }) {
                     Image(systemName: "arrow.up.doc")
@@ -55,7 +55,7 @@ struct SubscriptionListView: View {
                         .imageScale(.small)
                 }
                 .buttonStyle(.plain)
-                .batTooltip("Export", horizontalEdge: .trailing)
+                .batTooltip("Export", horizontalEdge: .leading)
 
                 Button(action: { showingAddSheet = true }) {
                     Image(systemName: "plus.square.fill")
@@ -64,7 +64,7 @@ struct SubscriptionListView: View {
                         .batGlow(color: .batCyan, radius: 2)
                 }
                 .buttonStyle(.plain)
-                .batTooltip("Add New", horizontalEdge: .trailing)
+                .batTooltip("Add New", horizontalEdge: .leading)
             }
             .padding(12)
             .background(Color.batDarkGray)
@@ -124,12 +124,12 @@ struct SubscriptionListView: View {
                             Image(systemName: "externaldrive.badge.xmark")
                                 .font(.system(size: 56))
                                 .foregroundColor(.batTextTertiary)
-                            Text(searchText.isEmpty ? "[ NO_DATA_FOUND ]" : "[ SEARCH_EMPTY ]")
+                            Text(searchText.isEmpty ? "[ NO DATA FOUND ]" : "[ SEARCH EMPTY ]")
                                 .font(.system(size: 12, weight: .bold, design: .monospaced))
                                 .foregroundColor(.batTextSecondary)
                             if searchText.isEmpty {
                                 Button(action: { showingAddSheet = true }) {
-                                    Text("INITIALIZE_DATA")
+                                    Text("INITIALIZE DATA")
                                         .font(.system(size: 10, weight: .bold, design: .monospaced))
                                         .foregroundColor(.batCyan)
                                         .padding(.horizontal, 16)
