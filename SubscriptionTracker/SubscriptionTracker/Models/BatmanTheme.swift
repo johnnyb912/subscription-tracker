@@ -70,42 +70,39 @@ struct BatTooltipModifier: ViewModifier {
     @State private var isHovering = false
 
     func body(content: Content) -> some View {
-        content
-            .background(
-                GeometryReader { geometry in
-                    ZStack {
-                        if isHovering {
-                            Text(text.uppercased())
-                                .font(.system(size: 9, weight: .medium, design: .monospaced))
-                                .foregroundColor(.batCyan)
-                                .tracking(1)
-                                .padding(.horizontal, 8)
-                                .padding(.vertical, 4)
-                                .background(
-                                    RoundedRectangle(cornerRadius: 2)
-                                        .fill(Color.batBlack)
-                                        .overlay(
-                                            RoundedRectangle(cornerRadius: 2)
-                                                .strokeBorder(Color.batCyan.opacity(0.5), lineWidth: 1)
-                                        )
-                                        .shadow(color: Color.batCyan.opacity(0.4), radius: 4, x: 0, y: 0)
-                                )
-                                .fixedSize()
-                                .position(
-                                    x: geometry.size.width / 2,
-                                    y: -10
-                                )
-                                .zIndex(999)
-                        }
-                    }
-                    .frame(width: geometry.size.width, height: geometry.size.height)
-                    .allowsHitTesting(false)
+        ZStack {
+            content
+                .onHover { hovering in
+                    isHovering = hovering
                 }
-            )
-            .onHover { hovering in
-                isHovering = hovering
+
+            if isHovering {
+                VStack {
+                    Text(text.uppercased())
+                        .font(.system(size: 9, weight: .medium, design: .monospaced))
+                        .foregroundColor(.batCyan)
+                        .tracking(1)
+                        .padding(.horizontal, 8)
+                        .padding(.vertical, 4)
+                        .background(
+                            RoundedRectangle(cornerRadius: 2)
+                                .fill(Color.batBlack)
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 2)
+                                        .strokeBorder(Color.batCyan.opacity(0.5), lineWidth: 1)
+                                )
+                                .shadow(color: Color.batCyan.opacity(0.4), radius: 4, x: 0, y: 0)
+                        )
+                        .fixedSize()
+                        .offset(y: -30)
+
+                    Spacer()
+                }
+                .allowsHitTesting(false)
+                .transition(.opacity)
             }
-            .zIndex(isHovering ? 1000 : 0)
+        }
+        .zIndex(isHovering ? 999 : 0)
     }
 }
 

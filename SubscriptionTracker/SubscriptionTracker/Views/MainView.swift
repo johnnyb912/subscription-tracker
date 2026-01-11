@@ -43,6 +43,7 @@ struct MainView: View {
             .padding(.horizontal, 16)
             .padding(.vertical, 12)
             .background(Color.batBlack)
+            .clipped(false)
             .overlay(
                 Rectangle()
                     .frame(height: 1)
@@ -87,6 +88,7 @@ struct MainView: View {
             }
             .background(Color.batBlack)
         }
+        .clipped(false)
         .frame(width: 450, height: 600)
         .background(Color.batBlack)
     }
